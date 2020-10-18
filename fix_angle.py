@@ -1,6 +1,6 @@
 import math
 """
-迎角調整板を作るプログラム
+迎角調整板のvector scriptを生成するプログラム
 
 xrotor ver 7.55
 """
