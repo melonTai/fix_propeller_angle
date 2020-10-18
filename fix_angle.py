@@ -5,14 +5,19 @@ import math
 xrotor ver 7.55
 """
 
-#=====入力=====
+#=====入力開始=====
 board_width = 200
-board_height = 190
+# ねじ穴間の距離[mm]
 hole_between = 100
+# ねじ穴の高さ[mm]
 hole_height = 15
+# 水平台における桁の高さ[mm]
 beam_height = 165.8
+# 回転中心から迎角調整板までの距離[mm]
 r = 1050
-hole = 4
+# ねじ穴直径[mm]
+hole = 5
+
 # 桁位置
 rib_center = 0.25
 # 設計ファイル読み込み(xrotorのrestartfile)
@@ -23,8 +28,10 @@ sub_foil_path = r"sub.dat"
 main_foil_path = r"main.dat"
 # 出力ファイル名
 output_filename = "output.txt"
-# mix
+# 翼型混合比
 mix = 0.15
+# 規定値から何度迎角を傾けるか[deg]
+rot_offset = 0.0
 
 #=====入力終了=====
 
@@ -235,7 +242,7 @@ if __name__ == '__main__':
     # 翼弦長
     cmod = linear(design_data_r, design_data_c, r)
     # 水平面を0度としたときのリブの角度をrot_offset分平行移動したもの
-    rot = -linear(design_data_r, design_data_rot, r)
+    rot = -linear(design_data_r, design_data_rot, r) - rot_offset*math.pi/180
 
     airfoil_data = []
 
@@ -272,8 +279,10 @@ if __name__ == '__main__':
     output_rib_data += "AddPoint({},{});\n".format(rib_poly[front_index][0] , rib_poly[front_index][1])
     output_rib_data += "EndPoly;\n"
 
-    output_rib_data += "Arc(" + str(-beam_height + hole_height + hole_between/2 - hole / 2) + "," + str(-beam_height + hole_height - hole/2) + "," + str(-beam_height + hole_height + hole_between/2 + hole / 2) + "," + str(-beam_height + hole_height + hole/2) + ",#0,#360);\n"
-    output_rib_data += "Arc(" + str(-beam_height + hole_height - hole_between/2 - hole / 2) + "," + str(-beam_height + hole_height - hole/2) + "," + str(-beam_height + hole_height - hole_between/2 + hole / 2) + "," + str(-beam_height + hole_height + hole/2) + ",#0,#360);\n"
+    output_rib_data += "Arc(" + str(hole_between/2 - hole / 2) + "," + str(-beam_height + hole_height - hole/2) + "," + str(hole_between/2 + hole / 2) + "," + str(-beam_height + hole_height + hole/2) + ",#0,#360);\n"
+    output_rib_data += "Arc(" + str(-hole_between/2 - hole / 2) + "," + str(-beam_height + hole_height - hole/2) + "," + str(-hole_between/2 + hole / 2) + "," + str(-beam_height + hole_height + hole/2) + ",#0,#360);\n"
+
+    #
 
     with open(output_filename, mode='w') as f:
         f.write(output_rib_data)
