@@ -19,7 +19,7 @@ r = 1050
 hole = 5
 
 # 桁位置
-rib_center = 0.25
+rib_center = 0.297
 # 設計ファイル読み込み(xrotorのrestartfile)
 filename = r"bladeDesign2020_ver13"
 # サブ翼型のdatファイルパス(ペラ根本、ペラ端で使用)
@@ -29,9 +29,9 @@ main_foil_path = r"main.dat"
 # 出力ファイル名
 output_filename = "output.txt"
 # 翼型混合比
-mix = 0.15
+mix = 0
 # 規定値から何度迎角を傾けるか[deg]
-rot_offset = 0.0
+rot_offset = 2.0
 
 #=====入力終了=====
 
